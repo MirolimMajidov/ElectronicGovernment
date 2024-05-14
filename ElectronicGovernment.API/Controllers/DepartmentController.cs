@@ -42,6 +42,7 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpPost("Create")]
+    [Authorize(policy: "AdminOnly")]
     public virtual ActionResult<DepartmentInfo> Post([FromBody] CommandDepartment item)
     {
         if (string.IsNullOrEmpty(item.Name))
@@ -60,6 +61,7 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpPut("Update")]
+    [Authorize(policy: "AdminOnly")]
     public virtual ActionResult<string> Put([FromQuery] Guid id, [FromBody] CommandDepartment item)
     {
         if (string.IsNullOrEmpty(item.Name))
@@ -78,6 +80,7 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpDelete("Delete")]
+    [Authorize(policy: "AdminOnly")]
     public virtual ActionResult<string> Delete([FromQuery] Guid id)
     {
         var deleted = _repository.TryDelete(id, out string message);

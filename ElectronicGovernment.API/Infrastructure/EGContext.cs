@@ -28,7 +28,7 @@ namespace BankManagementSystem.Infrastructure
         {
             modelBuilder.Ignore<BaseEntity>();
 
-            var organization = new Organization()
+            var organization = new Organization(IEGContext.GlobalId)
             {
                 Name = "Electronic Government",
                 Description = "To automate all departments of the Government"

@@ -2,6 +2,16 @@
 {
     public class Organization : BaseEntity
     {
+        public Organization() : base()
+        {
+        }
+
+        public Organization(Guid id) : base()
+        {
+            if (id != Guid.Empty)
+                Id = id;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
 
