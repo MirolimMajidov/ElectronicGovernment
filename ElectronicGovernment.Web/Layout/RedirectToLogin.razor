@@ -1,0 +1,12 @@
+﻿@using EGovernment.Web.Abstractions
+@inject INavigationService NavigationService
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("navigate to login");
+        NavigationService.NavigateToLoginPage();
+    }
+
+}

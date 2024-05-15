@@ -1,0 +1,56 @@
+﻿@layout LoginLayout
+@page "/login"
+@using Blazored.LocalStorage
+@using EGovernment.Web.Abstractions
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IAuthenticationService AuthenticationService
+@inject INavigationService NavigationService
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<MudContainer class="d-flex justify-center align-center" style="height: 100vh;">
+    <MudPaper Style="width: 360px">
+        <MudForm Class="pa-6" @bind-IsValid="@_success" @bind-Errors="@_errors">
+            <MudTextField @bind-Value="Username" T="string" Label="Username" Required="true" RequiredError="Username is required!"/>
+            <MudTextField @bind-Value="Password" T="string" Label="Password" InputType="InputType.Password" Required="true"
+                          RequiredError="Password is required!"/>
+            <div class="d-flex align-center justify-center">
+                <MudButton Class="mt-5 px-10" Variant="Variant.Filled" OnClick="SignIn">
+                    <div class="d-flex flex-row">
+                        @if (_isSigningIn)
+                        {
+                            <MudProgressCircular Indeterminate="true" Size="Size.Small"/>
+                        }
+                        else
+                        {
+                            <MudText>Login</MudText>
+                            <MudIcon Icon="@Icons.Material.Filled.Login"/>
+                        }
+                    </div>
+                </MudButton>
+            </div>
+        </MudForm>
+    </MudPaper>
+</MudContainer>
+
+@code
+{
+    bool _success;
+    string[] _errors = [];
+    bool _isSigningIn;
+    string Username = "";
+    string Password = "";
+
+    private async Task SignIn()
+    {
+        _isSigningIn = true;
+        try
+        {
+            await AuthenticationService.SignIn(Username, Password);
+        }
+        finally
+        {
+            _isSigningIn = false;
+        }
+    }
+}

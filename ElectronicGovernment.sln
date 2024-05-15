@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicGovernment.API", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicGovernment.DTO", "ElectronicGovernment.DTO\ElectronicGovernment.DTO.csproj", "{2B89B24F-37CA-4A80-B51E-27530643939D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicGovernment.Web", "ElectronicGovernment.Web\ElectronicGovernment.Web.csproj", "{B8BDA696-8132-45AF-8485-E27093AD989D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2B89B24F-37CA-4A80-B51E-27530643939D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B89B24F-37CA-4A80-B51E-27530643939D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B89B24F-37CA-4A80-B51E-27530643939D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8BDA696-8132-45AF-8485-E27093AD989D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8BDA696-8132-45AF-8485-E27093AD989D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8BDA696-8132-45AF-8485-E27093AD989D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BDA696-8132-45AF-8485-E27093AD989D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

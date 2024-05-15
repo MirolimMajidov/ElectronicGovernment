@@ -1,0 +1,102 @@
+﻿@attribute [Authorize]
+@page "/docs"
+@using EGovernment.Web.Abstractions
+@using ElectronicGovernment.DTO
+@using Microsoft.AspNetCore.Authorization
+@inject IDepService DepService
+
+<MudContainer>
+	<MudText Typo="Typo.h5">Документы</MudText>
+	<MudSelect T="string" Label="Select dep" @bind-Value="@selectedDep" Variant="Variant.Outlined">
+		@foreach (var x in deps)
+		{
+			<MudSelectItem Value="x.Name" />
+		}
+	</MudSelect>
+	<MudPaper Class="d-flex justify-content-between">
+		<MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+			<ButtonTemplate>
+				<MudFab HtmlTag="label"
+						Color="Color.Secondary"
+						Icon="@Icons.Material.Filled.CloudUpload"
+						Label="Добавить документ"
+						for="@context.Id" />
+			</ButtonTemplate>
+		</MudFileUpload>
+		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="ml-3"></MudTextField>
+	</MudPaper>
+
+	<MudTable @ref="_table" T="DocumentTemplateInfo" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+			  OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+		<HeaderContent>
+			<MudTh>Название</MudTh>
+			<MudTh>Описание</MudTh>
+			<MudTh>Имя файла</MudTh>
+			<MudTh>Путь к файлу</MudTh>
+			<MudTh>Статус</MudTh>
+			<MudTh></MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Nr">@context.Name</MudTd>
+			<MudTd DataLabel="Sign">@context.Description</MudTd>
+			<MudTd DataLabel="Name">@context.FileName</MudTd>
+			<MudTd DataLabel="Position">@context.FilePath</MudTd>
+			<MudTd DataLabel="Molar mass">@context.Status</MudTd>
+			<MudTd DataLabel="Actions">
+				<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" aria-label="delete"></MudIconButton>
+				<MudIconButton Icon="@Icons.Material.Filled.Edit" aria-label="edit" Color="Color.Info"></MudIconButton>
+				<MudIconButton Icon="@Icons.Material.Filled.Download" aria-label="download" Color="Color.Primary"></MudIconButton>
+			</MudTd>
+		</RowTemplate>
+		<PagerContent>
+			<MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+		</PagerContent>
+	</MudTable>
+
+
+
+</MudContainer>
+
+@code {
+	private string selectedDep = "";
+	private int gg = 10;
+	private MudTable<DocumentTemplateInfo> table;
+	private string searchString = null;
+	protected List<DepartmentInfo> deps = new();
+	IList<IBrowserFile> files = new List<IBrowserFile>();
+	private void UploadFiles(IBrowserFile file)
+	{
+		files.Add(file);
+		//TODO upload the files to the server
+	}
+
+	private HashSet<DocumentTemplateInfo> selectedItems = new();
+	private List<DocumentTemplateInfo> Elements = new();
+	private bool _selectOnRowClick = true;
+	private MudTable<DocumentTemplateInfo> _table;
+	private string _selectedItemText = "No row clicked";
+
+
+	void OnRowClick(TableRowClickEventArgs<DocumentTemplateInfo> args)
+	{
+		_selectedItemText = $"{args} ({args})";
+	}
+	private void OnSearch(string text)
+	{
+		searchString = text;
+		table.ReloadServerData();
+	}
+	protected override async Task OnInitializedAsync()
+	{
+		deps = await DepService.GetAllDeps();
+		foreach (var dep in deps)
+		{
+			var sd = await DepService.GetAllDocs(dep.Id);
+			Elements.AddRange(sd);
+		}
+		StateHasChanged();
+	}
+
+}
+

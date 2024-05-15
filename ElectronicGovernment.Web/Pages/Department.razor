@@ -1,0 +1,120 @@
+﻿@page "/department"
+
+<MudTabs Elevation="1" Rounded="true" PanelClass="pa-6" Class="align-center">
+    <MudTabPanel>
+        <ChildContent>
+            <MudStack Justify="Justify.Center">
+                <MudGrid Class="align-center">
+                    <MudItem md="4">
+                        <MudText>Название</MudText>
+                    </MudItem>
+                    <MudItem md="8">
+                        <MudTextField T="string" Variant="Variant.Outlined" Style="width: 320px"></MudTextField>
+                    </MudItem>
+                </MudGrid>
+                <MudGrid Class="align-center">
+                    <MudItem md="4">
+                        <MudText>Заведующий</MudText>
+                    </MudItem>
+                    <MudItem md="8">
+                        <MudTextField T="string" Variant="Variant.Outlined" Style="width: 320px"></MudTextField>
+                    </MudItem>
+                </MudGrid>
+                <MudGrid Class="align-center">
+                    <MudItem md="4">
+                        <MudText>Телефон</MudText>
+                    </MudItem>
+                    <MudItem md="8">
+                        <MudTextField T="string" Variant="Variant.Outlined" Style="width: 320px"></MudTextField>
+                    </MudItem>
+                </MudGrid>
+                <MudStack Row="true" Justify="Justify.FlexEnd">
+                    <MudButton Variant="Variant.Filled">Сохранить</MudButton>
+                    <MudButton Variant="Variant.Filled">Отмена</MudButton>
+                </MudStack>
+            </MudStack>
+        </ChildContent>
+        <TabContent>
+            Основная информация
+        </TabContent>
+    </MudTabPanel>
+    <MudTabPanel>
+        <ChildContent>
+            <MudText>Custom tab content only</MudText>
+        </ChildContent>
+        <TabContent>
+            Сотрудники
+        </TabContent>
+    </MudTabPanel>
+    <MudTabPanel>
+        <ChildContent>
+            <MudTable @ref="_table" T="Template" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                      OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+                <HeaderContent>
+                    <MudTh>Id</MudTh>
+                    <MudTh>Название</MudTh>
+                    <MudTh>Тип шаблона</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Id">@context.Id</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="TemplateType">@context.TemplateType</MudTd>
+                    <MudTd DataLabel="Actions">
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" aria-label="edit" Color="Color.Info"></MudIconButton>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" aria-label="delete"></MudIconButton>
+                    </MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+                </PagerContent>
+            </MudTable>
+        </ChildContent>
+        <TabContent>
+            Шаблоны
+        </TabContent>
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    private int gg = 10;
+    private MudTable<Template> table;
+    private string searchString = null;
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    private void UploadFiles(IBrowserFile file)
+    {
+        files.Add(file);
+        //TODO upload the files to the server
+    }
+
+    private HashSet<Template> selectedItems = new();
+    private IEnumerable<Template> Elements = new List<Template>
+    {
+        new Template {Id = 1, Name = "asd1", TemplateType = "asdf"},
+        new Template {Id = 1, Name = "asd1", TemplateType = "asdf"},
+        new Template {Id = 1, Name = "asd1", TemplateType = "asdf"},
+        new Template {Id = 1, Name = "asd1", TemplateType = "asdf"},
+        new Template {Id = 1, Name = "asd1", TemplateType = "asdf"},
+    };
+    private bool _selectOnRowClick = true;
+    private MudTable<Template> _table;
+    private string _selectedItemText = "No row clicked";
+
+
+    void OnRowClick(TableRowClickEventArgs<Template> args)
+    {
+        _selectedItemText = $"{args} ({args})";
+    }
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
+
+    class Template
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string TemplateType { get; set; }
+    }
+}

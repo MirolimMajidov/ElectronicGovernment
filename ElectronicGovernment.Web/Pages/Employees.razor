@@ -1,0 +1,102 @@
+﻿@page "/employees"
+@using EGovernment.Web.Abstractions
+@inject INavigationService NavigationService
+
+<MudContainer>
+    <MudText Typo="Typo.h5">Отделы</MudText>
+    <MudPaper Class="d-flex justify-content-between">
+        <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+            <ButtonTemplate>
+                <MudFab HtmlTag="label"
+                        Color="Color.Secondary"
+                        Icon="@Icons.Material.Filled.CloudUpload"
+                        Label="Добавить отдел"
+                        for="@context.Id" />
+            </ButtonTemplate>
+        </MudFileUpload>
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="ml-3"></MudTextField>
+    </MudPaper>
+
+    <MudTable @ref="_table" T="Template" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+              OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Название</MudTh>
+            <MudTh>Заведующий отделом</MudTh>
+            <MudTh>Количество сотрудников</MudTh>
+            <MudTh>Телефон</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Name">@context.LeadOfDepartment</MudTd>
+            <MudTd DataLabel="Name">@context.EmployeeCount</MudTd>
+            <MudTd DataLabel="Name">@context.PhoneNumber</MudTd>
+            <MudTd DataLabel="Actions">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="NavigateToDepartment" aria-label="edit" Color="Color.Info"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" aria-label="delete"></MudIconButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+        </PagerContent>
+    </MudTable>
+
+
+
+</MudContainer>
+
+@code {
+    private int gg = 10;
+    private MudTable<Template> table;
+    private string searchString = null;
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    private void UploadFiles(IBrowserFile file)
+    {
+        files.Add(file);
+        //TODO upload the files to the server
+    }
+
+    private HashSet<Template> selectedItems = new();
+    private IEnumerable<Template> Elements = new List<Template>
+    {
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+        new Template {Id = 1, Name = "Отдел кадров", LeadOfDepartment = "Алиев А.А", EmployeeCount = 4, PhoneNumber = "92- 820-15-12"},
+    };
+    private bool _selectOnRowClick = true;
+    private MudTable<Template> _table;
+    private string _selectedItemText = "No row clicked";
+
+
+    void OnRowClick(TableRowClickEventArgs<Template> args)
+    {
+        _selectedItemText = $"{args} ({args})";
+    }
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
+
+    void NavigateToDepartment()
+    {
+        NavigationService.NavigateTo("/department");
+    }
+
+    class Template
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string LeadOfDepartment { get; set; }
+        public int EmployeeCount { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+}

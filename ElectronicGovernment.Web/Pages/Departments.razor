@@ -1,0 +1,86 @@
+﻿@page "/departments"
+@using System.Text.Json
+@using E_Government.Web.Components
+@using EGovernment.Web.Abstractions
+@using ElectronicGovernment.DTO
+@inject INavigationService NavigationService
+@inject HttpClient HttpClient
+@inject IDialogService DialogService;
+
+<MudContainer>
+    <MudStack Row="true" Class="mb-3">
+        <MudText Typo="Typo.h5">Отделы</MudText>
+        <MudButton OnClick="ShowCreateModal" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Class="rounded-pill" Style="background-color: #FFB27D; color: white">
+            Добавить отдел
+        </MudButton>
+    </MudStack>
+    <MudPaper Class="d-flex justify-content-between mb-3 ">
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="ml-3"></MudTextField>
+    </MudPaper>
+
+    <MudTable @ref="_table" T="DepartmentInfo" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+              OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Название</MudTh>
+            <MudTh>Описание</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Name">@context.Description</MudTd>
+            <MudTd DataLabel="Actions">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="NavigateToDepartment" aria-label="edit" Color="Color.Info"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" aria-label="delete"></MudIconButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }"/>
+        </PagerContent>
+    </MudTable>
+
+
+
+</MudContainer>
+
+@code {
+    private int gg = 10;
+    private string searchString = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var departments = await HttpClient.GetFromJsonAsync<List<DepartmentInfo>>("/Department/All");
+        Elements = departments;
+    }
+    
+    private async void ShowCreateModal()
+    {
+        var modal = await DialogService.ShowAsync<CreateDepartmentComponent>("Create Department");
+        var modalResult = await modal.Result;
+        if (modalResult.Canceled) return;
+    }
+    private HashSet<DepartmentInfo> selectedItems = new();
+    private IEnumerable<DepartmentInfo> Elements = new List<DepartmentInfo>();
+    private IEnumerable<EmployeeInfo> Employees = new List<EmployeeInfo>();
+    private bool _selectOnRowClick = true;
+    private MudTable<DepartmentInfo> _table;
+    private string _selectedItemText = "No row clicked";
+
+
+    void OnRowClick(TableRowClickEventArgs<DepartmentInfo> args)
+    {
+        _selectedItemText = $"{args} ({args})";
+    }
+    private void OnSearch(string text)
+    {
+        searchString = text;
+    }
+
+    void NavigateToDepartment()
+    {
+        NavigationService.NavigateTo("/department");
+    }
+
+}

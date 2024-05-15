@@ -1,0 +1,30 @@
+@using Blazored.LocalStorage
+@using EGovernment.Web.Abstractions
+@inject INavigationService NavigationService
+@inject ILocalStorageService LocalStorageService
+
+<MudNavMenu Class="pt-16" Style="background-color: #ddeff9; height: 100vh">
+    <MudStack>
+        <MudStack Spacing="0">
+            <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Apartment">Организация</MudNavLink>
+            <MudNavLink Href="departments" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.DocumentScanner">Отделы</MudNavLink>
+            <MudNavLink Href="docs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Description">Документы</MudNavLink>
+            <MudNavLink Href="staff" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Сотрудники</MudNavLink>
+        </MudStack>
+        <MudSpacer/>
+        <MudStack>
+            <MudNavLink OnClick="LogOut" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Logout">Выход</MudNavLink>
+        </MudStack>
+    </MudStack>
+
+</MudNavMenu>
+
+@code {
+
+    async Task LogOut()
+    {
+        await LocalStorageService.RemoveItemAsync("token");
+        NavigationService.NavigateToLoginPage();
+    }
+
+}

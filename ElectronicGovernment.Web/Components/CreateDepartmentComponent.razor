@@ -1,0 +1,48 @@
+﻿@using ElectronicGovernment.DTO
+@inject HttpClient HttpClient
+
+<MudDialog>
+    <DialogContent>
+        <MudStack>
+            <MudTextField T="string" Required="true" Placeholder="Name" Label="Name" />
+        </MudStack>
+        <MudStack>
+            <MudTextField T="string" Required="true" Placeholder="Description" Label="Description" />
+        </MudStack>
+        <MudStack>
+            <MudSelect @bind-Value="Leader" T="EmployeeInfo" Label="Leader">
+                @foreach (var employee in Employees)
+                {
+                    <MudSelectItem Value="employee">@employee.FullName</MudSelectItem>
+                }
+            </MudSelect>
+        </MudStack>
+        <MudStack>
+            <MudSelect @bind-Value="Operator" T="EmployeeInfo" Label="Operator">
+                @foreach (var employee in Employees)
+                {
+                <MudSelectItem Value="employee">@employee.FullName</MudSelectItem>
+                }
+            </MudSelect>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudStack>
+            <MudIconButton Variant="Variant.Filled" Color="Color.Info">Add new department</MudIconButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    IEnumerable<EmployeeInfo> Employees = new List<EmployeeInfo>();
+    
+    EmployeeInfo Leader = new EmployeeInfo();
+    EmployeeInfo Operator = new EmployeeInfo();
+    CommandDepartment Department = new CommandDepartment();
+    protected override async Task OnInitializedAsync()
+    {
+        var employees = await HttpClient.GetFromJsonAsync<List<EmployeeInfo>>("/Employee/All");
+        Employees = employees;
+    }
+
+}
