@@ -1,4 +1,5 @@
 using AutoMapper;
+using ElectronicGovernment.API.Infrastructure;
 using ElectronicGovernment.API.Models;
 using ElectronicGovernment.API.Repositories;
 using ElectronicGovernment.DTO;
@@ -48,6 +49,7 @@ public class EmployeeController : ControllerBase
             return BadRequest(message);
 
         var _item = _mapper.Map<Employee>(item);
+        _item.OrganizationId = IEGContext.GlobalId;
         var createdItem = _repository.TryCreate(_item, out message);
         if (createdItem is null)
             return BadRequest(message);

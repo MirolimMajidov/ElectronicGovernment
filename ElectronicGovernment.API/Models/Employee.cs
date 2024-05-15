@@ -2,4 +2,6 @@
 
 public class Employee : User
 {
+    public Guid OrganizationId { get; set; }
+    public Organization Organization { get; set; }
 }

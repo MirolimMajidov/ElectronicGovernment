@@ -40,6 +40,7 @@ namespace BankManagementSystem.Infrastructure
 
                 entity.HasData(organization);
                 entity.HasMany(p => p.Departments).WithOne(e => e.Organization).HasForeignKey(e => e.OrganizationId).IsRequired();
+                entity.HasMany(p => p.Employees).WithOne(e => e.Organization).HasForeignKey(e => e.OrganizationId).IsRequired();
                 entity.HasOne(p => p.CEO).WithMany().HasForeignKey(e => e.CEOId).IsRequired(false);
                 entity.HasOne(p => p.Operator).WithMany().HasForeignKey(e => e.OperatorId).IsRequired(false);
             });
@@ -55,21 +56,24 @@ namespace BankManagementSystem.Infrastructure
             {
                 FirstName = "Admin",
                 Username = "Admin",
-                Password = "Admin"
+                Password = "Admin",
+                OrganizationId = organization.Id
             };
             var ceoOrg = new Employee()
             {
                 FirstName = "CEO",
                 LastName = "Organization",
                 Username = "CEO",
-                Password = "Organization"
+                Password = "Organization",
+                OrganizationId = organization.Id
             };
             var operatorOrg = new Employee()
             {
                 FirstName = "Global",
                 LastName = "Operator",
                 Username = "GlobalOperator",
-                Password = "Operator"
+                Password = "Operator",
+                OrganizationId = organization.Id
             };
 
             var leadDep1 = new Employee()
@@ -77,28 +81,32 @@ namespace BankManagementSystem.Infrastructure
                 FirstName = "Leader",
                 LastName = "Department1",
                 Username = "LeadDep1",
-                Password = "Dep1"
+                Password = "Dep1",
+                OrganizationId = organization.Id
             };
             var leadDep2 = new Employee()
             {
                 FirstName = "Leader",
                 LastName = "Department2",
                 Username = "LeadDep2",
-                Password = "Dep2"
+                Password = "Dep2",
+                OrganizationId = organization.Id
             };
             var operatorDep1 = new Employee()
             {
                 FirstName = "Operator",
                 LastName = "Department1",
                 Username = "OpeDep1",
-                Password = "Dep1"
+                Password = "Dep1",
+                OrganizationId = organization.Id
             };
             var operatorDep2 = new Employee()
             {
                 FirstName = "Leader",
                 LastName = "Department2",
                 Username = "OpeDep2",
-                Password = "Dep2"
+                Password = "Dep2",
+                OrganizationId = organization.Id
             };
             modelBuilder.Entity<Employee>(entity =>
             {

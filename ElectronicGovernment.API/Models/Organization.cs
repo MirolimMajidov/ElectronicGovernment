@@ -22,5 +22,7 @@
         public Employee Operator { get; set; } = null;
 
         public ICollection<Department> Departments { get; set; }
+
+        public ICollection<Employee> Employees { get; set; }
     }
 }

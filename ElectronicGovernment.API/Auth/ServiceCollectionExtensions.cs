@@ -15,20 +15,14 @@ public static class ServiceCollectionExtensions
     {
         service.AddAuthorization(options =>
         {
-            options.AddPolicy("AdminOnly", 
-                policy =>
-                {
-                    policy.RequireRole(nameof(RoleType.Admin));
-                    policy.RequireRole(nameof(RoleType.CEO));
-                });
+            options.AddPolicy("AdminOnly",
+                policy => policy.RequireRole(nameof(RoleType.Admin), nameof(RoleType.CEO)));
 
             options.AddPolicy("OperatorOnly",
-                policy =>
-                {
-                    policy.RequireRole(nameof(RoleType.Operator));
-                    policy.RequireRole(nameof(RoleType.GlobalOperator));
-                });
-            options.AddPolicy("LeadOnly", policy => policy.RequireRole(nameof(RoleType.Lead)));
+                policy => policy.RequireRole(nameof(RoleType.Operator), nameof(RoleType.GlobalOperator)));
+
+            options.AddPolicy("LeadOnly",
+                policy => policy.RequireRole(nameof(RoleType.Lead)));
         });
 
         service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

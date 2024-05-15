@@ -9,7 +9,7 @@ namespace ElectronicGovernment.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize(policy: "AdminOnly")]
+[Authorize(policy: "AdminOnly")]
 public class DocumentTemplateController : ControllerBase
 {
     private readonly ILogger<DocumentTemplateController> _logger;
