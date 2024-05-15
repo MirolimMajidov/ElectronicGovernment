@@ -1,5 +1,6 @@
 ﻿using ElectronicGovernment.API.Models;
 using ElectronicGovernment.Auth;
+using ElectronicGovernment.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

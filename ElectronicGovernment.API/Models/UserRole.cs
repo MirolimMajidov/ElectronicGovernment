@@ -1,4 +1,6 @@
-﻿namespace ElectronicGovernment.API.Models;
+﻿using ElectronicGovernment.DTO;
+
+namespace ElectronicGovernment.API.Models;
 
 public class UserRole : BaseEntity
 {

@@ -1,5 +1,6 @@
 ﻿using ElectronicGovernment.API.Infrastructure;
 using ElectronicGovernment.API.Models;
+using ElectronicGovernment.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankManagementSystem.Infrastructure

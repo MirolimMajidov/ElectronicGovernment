@@ -1,4 +1,4 @@
-﻿namespace ElectronicGovernment.API.Models
+﻿namespace ElectronicGovernment.DTO
 {
     public enum RoleType
     {
