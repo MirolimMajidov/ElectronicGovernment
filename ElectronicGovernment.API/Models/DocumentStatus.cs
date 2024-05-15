@@ -2,7 +2,9 @@
 {
     public enum DocumentStatus
     {
-        Created,
+        None,
+        InProgress,
+        ReApplied,
         Accepted,
         Rejected,
         AllowToReApply

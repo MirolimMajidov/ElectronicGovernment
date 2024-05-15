@@ -14,7 +14,6 @@ namespace BankManagementSystem.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Citizen> Citizens { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
         public DbSet<Document> Documents { get; set; }
@@ -129,49 +128,21 @@ namespace BankManagementSystem.Infrastructure
                 entity.HasOne(p => p.Operator).WithMany().HasForeignKey(e => e.OperatorId).IsRequired(false);
             });
 
-            var adminRole = new Role()
-            {
-                Name = "Admin",
-            };
-            var ceoRole = new Role()
-            {
-                Name = "CEO",
-            };
-            var leadRole = new Role()
-            {
-                Name = "Lead",
-            };
-            var globalOperatorRole = new Role()
-            {
-                Name = "Global Operator",
-            };
-            var operatorRole = new Role()
-            {
-                Name = "Operator",
-            };
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.HasKey(p => p.Id);
-                entity.HasIndex(p => p.Name).IsUnique();
-                entity.HasData(adminRole, ceoRole, leadRole, globalOperatorRole, operatorRole);
-                entity.HasMany(p => p.Users).WithOne(e => e.Role).HasForeignKey(e => e.RoleId).IsRequired();
-            });
-
             var roles = new List<UserRole>()
             {
-                new UserRole() {UserId = admin.Id, RoleId = adminRole.Id},
-                new UserRole() {UserId = ceoOrg.Id, RoleId = ceoRole.Id},
-                new UserRole() {UserId = operatorOrg.Id, RoleId = globalOperatorRole.Id},
-                new UserRole() {UserId = leadDep1.Id, RoleId = leadRole.Id},
-                new UserRole() {UserId = leadDep2.Id, RoleId = leadRole.Id},
-                new UserRole() {UserId = operatorDep1.Id, RoleId = operatorRole.Id},
-                new UserRole() {UserId = operatorDep2.Id, RoleId = operatorRole.Id},
+                new UserRole() {UserId = admin.Id, RoleType = RoleType.Admin},
+                new UserRole() {UserId = ceoOrg.Id, RoleType = RoleType.CEO},
+                new UserRole() {UserId = operatorOrg.Id, RoleType = RoleType.GlobalOperator},
+                new UserRole() {UserId = leadDep1.Id, RoleType = RoleType.Lead},
+                new UserRole() {UserId = leadDep2.Id, RoleType = RoleType.Lead},
+                new UserRole() {UserId = operatorDep1.Id, RoleType = RoleType.Operator },
+                new UserRole() {UserId = operatorDep2.Id, RoleType = RoleType.Operator },
             };
             modelBuilder.Entity<UserRole>(entity =>
             {
                 entity.HasKey(p => p.Id);
 
-                entity.HasIndex(p => new { p.UserId, p.RoleId }).IsUnique();
+                entity.HasIndex(p => new { p.UserId, p.RoleType }).IsUnique();
                 entity.HasData(roles);
             });
 

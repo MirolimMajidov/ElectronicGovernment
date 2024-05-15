@@ -1,4 +1,5 @@
-﻿using ElectronicGovernment.Auth;
+﻿using ElectronicGovernment.API.Models;
+using ElectronicGovernment.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,17 +17,17 @@ public static class ServiceCollectionExtensions
             options.AddPolicy("AdminOnly", 
                 policy =>
                 {
-                    policy.RequireRole("Admin");
-                    policy.RequireRole("CEO");
+                    policy.RequireRole(nameof(RoleType.Admin));
+                    policy.RequireRole(nameof(RoleType.CEO));
                 });
 
             options.AddPolicy("OperatorOnly",
                 policy =>
                 {
-                    policy.RequireRole("Operator");
-                    policy.RequireRole("Global Operator");
+                    policy.RequireRole(nameof(RoleType.Operator));
+                    policy.RequireRole(nameof(RoleType.GlobalOperator));
                 });
-            options.AddPolicy("LeadOnly", policy => policy.RequireRole("Lead"));
+            options.AddPolicy("LeadOnly", policy => policy.RequireRole(nameof(RoleType.Lead)));
         });
 
         service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

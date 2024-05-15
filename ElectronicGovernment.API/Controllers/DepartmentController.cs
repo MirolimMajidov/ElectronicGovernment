@@ -1,4 +1,5 @@
 using AutoMapper;
+using BankManagementSystem.Infrastructure;
 using ElectronicGovernment.API.Models;
 using ElectronicGovernment.API.Repositories;
 using ElectronicGovernment.DTO;
@@ -32,9 +33,9 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpGet("GetById")]
-    public virtual async Task<ActionResult<DepartmentInfo>> Get(Guid id)
+    public ActionResult<DepartmentInfo> Get(Guid id)
     {
-        var item = await _repository.GetById(id);
+        var item = _repository.GetById(id);
         if (item is null)
             return NotFound();
 
@@ -42,7 +43,7 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpPost("Create")]
-    public virtual ActionResult<DepartmentInfo> Post([FromBody] CommandDepartment item)
+    public ActionResult<DepartmentInfo> Post([FromBody] CommandDepartment item)
     {
         if (string.IsNullOrEmpty(item.Name))
         {
@@ -60,7 +61,7 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpPut("Update")]
-    public virtual ActionResult<string> Put([FromQuery] Guid id, [FromBody] CommandDepartment item)
+    public ActionResult<string> Put([FromQuery] Guid id, [FromBody] CommandDepartment item)
     {
         if (string.IsNullOrEmpty(item.Name))
         {
@@ -68,7 +69,15 @@ public class DepartmentController : ControllerBase
         }
         else
         {
-            var _item = _mapper.Map<Department>(item);
+            var _item = _repository.GetById(id);
+            if (_item is null)
+                return NotFound();
+
+            UpdateRole(item, _item);
+            _item.Name = item.Name;
+            _item.Description = item.Description;
+            _item.LeaderId = item.LeaderId;
+            _item.OperatorId = item.OperatorId;
             var updated = _repository.TryUpdate(_item, out string message);
             if (!updated)
                 return BadRequest(message);
@@ -77,8 +86,43 @@ public class DepartmentController : ControllerBase
         }
     }
 
+    void UpdateRole(CommandDepartment item, Department existingDepartment)
+    {
+        var context = _repository.GetContext() as EGContext;
+        if (existingDepartment is not null)
+        {
+            var leaderRule = context.GetEntities<UserRole>().FirstOrDefault(x => x.UserId == existingDepartment.LeaderId && x.RoleType == RoleType.Lead);
+            if (leaderRule != null)
+                context.UserRoles.Remove(leaderRule);
+
+            var operatorRule = context.GetEntities<UserRole>().FirstOrDefault(x => x.UserId == existingDepartment.OperatorId && x.RoleType == RoleType.Operator);
+            if (operatorRule != null)
+                context.UserRoles.Remove(operatorRule);
+        }
+
+        if(item.LeaderId != null)
+        {
+            var leaderRule = new UserRole
+            {
+                UserId = (Guid)item.OperatorId,
+                RoleType = RoleType.Lead
+            };
+            context.UserRoles.Add(leaderRule);
+        }
+
+        if (item.OperatorId != null)
+        {
+            var operatorRule = new UserRole
+            {
+                UserId = (Guid)item.OperatorId,
+                RoleType = RoleType.Operator
+            };
+            context.UserRoles.Add(operatorRule);
+        }
+    }
+
     [HttpDelete("Delete")]
-    public virtual ActionResult<string> Delete([FromQuery] Guid id)
+    public ActionResult<string> Delete([FromQuery] Guid id)
     {
         var deleted = _repository.TryDelete(id, out string message);
         if (!deleted)

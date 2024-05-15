@@ -18,9 +18,9 @@ public class SQLRepository<T> : ISQLRepository<T> where T : BaseEntity
         return _context.Set<T>();
     }
 
-    public async Task<T> GetById(Guid id)
+    public T GetById(Guid id)
     {
-        return await _context.Set<T>().SingleOrDefaultAsync(w => w.Id == id);
+        return _context.Set<T>().SingleOrDefault(w => w.Id == id);
     }
 
     public T TryCreate(T item, out string message)

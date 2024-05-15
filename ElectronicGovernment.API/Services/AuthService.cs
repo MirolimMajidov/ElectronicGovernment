@@ -19,14 +19,14 @@ namespace BankManagementSystem.Services
 
         public async Task<TokenInfo> Login(string username, string password)
         {
-            var user = await _context.Users.Include(u => u.Roles).ThenInclude(r => r.Role).SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
+            var user = await _context.Users.Include(u => u.Roles).SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
 
             return await GeneratedJWT(user);
         }
 
         public async Task<TokenInfo> RefreshToken(string refreshToken)
         {
-            var user = await _context.Users.Include(u => u.Roles).ThenInclude(r => r.Role).SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
+            var user = await _context.Users.Include(u => u.Roles).SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
 
             return await GeneratedJWT(user);
         }
@@ -36,15 +36,38 @@ namespace BankManagementSystem.Services
             if (user is null)
                 throw new ArgumentException("Invalid username or password.");
 
-            var userRoles = user.Roles?.Select(r => r.Role.Name) ?? [];
-
             var claims = new List<Claim> {
                 new Claim("Id", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FullName)
             };
 
-            foreach (var userRole in userRoles)
-                claims.Add(new Claim(ClaimTypes.Role, userRole));
+            foreach (var userRole in user.Roles)
+            {
+                string roleName;
+                switch (userRole.RoleType)
+                {
+                    case RoleType.Admin:
+                        roleName = nameof(RoleType.Admin);
+                        break;
+                    case RoleType.CEO:
+                        roleName = nameof(RoleType.CEO);
+                        break;
+                    case RoleType.Lead:
+                        roleName = nameof(RoleType.Lead);
+                        break;
+                    case RoleType.GlobalOperator:
+                        roleName = nameof(RoleType.GlobalOperator);
+                        break;
+                    case RoleType.Operator:
+                        roleName = nameof(RoleType.Operator);
+                        break;
+                    default:
+                        roleName = nameof(RoleType.Employee);
+                        break;
+                }
+
+                claims.Add(new Claim(ClaimTypes.Role, roleName));
+            }
 
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,
