@@ -25,11 +25,11 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpGet(Name = "All")]
-    public ActionResult<IEnumerable<DepartmentInfo>> Get()
+    public ActionResult<IEnumerable<DepartmentInfo>> GetAll()
     {
         var departments = _repository.GetAll();
 
-        return _mapper.Map<List<DepartmentInfo>>(departments);
+        return Ok(_mapper.Map<List<DepartmentInfo>>(departments));
     }
 
     [HttpGet("GetById")]
@@ -106,7 +106,7 @@ public class DepartmentController : ControllerBase
         {
             var leaderRule = new UserRole
             {
-                UserId = (Guid)item.OperatorId,
+                UserId = (Guid)item.LeaderId,
                 RoleType = RoleType.Lead
             };
             context.UserRoles.Add(leaderRule);

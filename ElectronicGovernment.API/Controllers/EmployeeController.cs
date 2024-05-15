@@ -23,11 +23,11 @@ public class EmployeeController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet(Name = "All")]
-    public ActionResult<IEnumerable<EmployeeInfo>> Get()
+    [HttpGet("All")]
+    public ActionResult<IEnumerable<EmployeeInfo>> GetAll()
     {
         var employees = _repository.GetAll();
-        return _mapper.Map<List<EmployeeInfo>>(employees);
+        return Ok(_mapper.Map<List<EmployeeInfo>>(employees));
     }
 
     [HttpGet("GetById")]
