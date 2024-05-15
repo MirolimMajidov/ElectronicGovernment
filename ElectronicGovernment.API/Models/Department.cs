@@ -12,5 +12,8 @@ public class Department : BaseEntity
     public Employee Operator { get; set; }
     public Guid OrganizationId { get; set; }
     public Organization Organization { get; set; }
+
+    public bool IsOnlyForWorkFlow { get; set; } = false;
+
     public ICollection<DocumentTemplate> DocumentTemplates { get; set; }
 }

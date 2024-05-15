@@ -27,6 +27,14 @@ public class DepartmentController : ControllerBase
     [HttpGet(Name = "All")]
     public ActionResult<IEnumerable<DepartmentInfo>> GetAll()
     {
+        var departments = _repository.GetAll().Where(r => r.IsOnlyForWorkFlow == false);
+
+        return Ok(_mapper.Map<List<DepartmentInfo>>(departments));
+    }
+
+    [HttpGet(Name = "WorkFlowDepartments")]
+    public ActionResult<IEnumerable<DepartmentInfo>> WorkFlowDepartments()
+    {
         var departments = _repository.GetAll();
 
         return Ok(_mapper.Map<List<DepartmentInfo>>(departments));
@@ -36,7 +44,7 @@ public class DepartmentController : ControllerBase
     public ActionResult<DepartmentFullInfo> Get(Guid id)
     {
         var item = _repository.GetById(id);
-        if (item is null)
+        if (item is null || item.IsOnlyForWorkFlow)
             return NotFound();
 
         return Ok(_mapper.Map<DepartmentInfo>(item));
@@ -72,7 +80,7 @@ public class DepartmentController : ControllerBase
         else
         {
             var _item = _repository.GetById(id);
-            if (_item is null)
+            if (_item is null || _item.IsOnlyForWorkFlow)
                 return NotFound();
 
             UpdateRole(item, _item);
@@ -102,7 +110,7 @@ public class DepartmentController : ControllerBase
                 context.UserRoles.Remove(operatorRule);
         }
 
-        if(item.LeaderId != null)
+        if (item.LeaderId != null)
         {
             var leaderRule = new UserRole
             {
@@ -127,6 +135,10 @@ public class DepartmentController : ControllerBase
     [Authorize(policy: "AdminOnly")]
     public ActionResult<string> Delete([FromQuery] Guid id)
     {
+        var item = _repository.GetById(id);
+        if (item is null || item.IsOnlyForWorkFlow)
+            return NotFound();
+
         var deleted = _repository.TryDelete(id, out string message);
         if (!deleted)
             return BadRequest(message);

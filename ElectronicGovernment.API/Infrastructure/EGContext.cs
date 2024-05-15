@@ -108,6 +108,10 @@ namespace BankManagementSystem.Infrastructure
             {
             });
 
+            var organizationDep = new Department();
+            organizationDep.Name = "Department 1";
+            organizationDep.LeaderId = ceoOrg.Id;
+
             var department1 = new Department();
             department1.Name = "Department 1";
             department1.LeaderId = leadDep1.Id;
@@ -133,6 +137,7 @@ namespace BankManagementSystem.Infrastructure
             {
                 new UserRole() {UserId = admin.Id, RoleType = RoleType.Admin},
                 new UserRole() {UserId = ceoOrg.Id, RoleType = RoleType.CEO},
+                new UserRole() {UserId = ceoOrg.Id, RoleType = RoleType.Lead},
                 new UserRole() {UserId = operatorOrg.Id, RoleType = RoleType.GlobalOperator},
                 new UserRole() {UserId = leadDep1.Id, RoleType = RoleType.Lead},
                 new UserRole() {UserId = leadDep2.Id, RoleType = RoleType.Lead},
