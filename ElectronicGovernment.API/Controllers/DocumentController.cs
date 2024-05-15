@@ -28,12 +28,12 @@ public class DocumentController : ControllerBase
     public ActionResult<IEnumerable<DocumentInfo>> GetAllDocuments(Guid departmentId, DocumentStatus? documentStatus = null)
     {
         var documents = _repository.GetAll().Include(d => d.Template).Where(t => t.Template.DepartmentId == departmentId).AsQueryable();
-        if(documentStatus is not null)
+        if (documentStatus is not null)
             documents = documents.Where(d => d.Status == documentStatus);
 
         var _documents = new List<DocumentInfo>();
 
-        foreach(var document in documents)
+        foreach (var document in documents)
             _documents.Add(document.GetDocumentInfo());
 
         return Ok(_mapper.Map<List<DocumentInfo>>(documents));
@@ -52,114 +52,113 @@ public class DocumentController : ControllerBase
         return Ok((document));
     }
 
-    //[HttpPost("Create")]
-    //public ActionResult<EmployeeInfo> Post(CreateDocumentTemplate item)
-    //{
-    //    var message = Validation(item);
-    //    if (!string.IsNullOrEmpty(message))
-    //        return BadRequest(message);
+    [HttpPost("Create")]
+    public ActionResult<DocumentInfo> Post(CreateDocument item)
+    {
+        var message = Validation(item);
+        if (!string.IsNullOrEmpty(message))
+            return BadRequest(message);
 
-    //    var _item = _mapper.Map<DocumentTemplate>(item);
-    //    var createdItem = _repository.TryCreate(_item, out message);
-    //    if (createdItem is null)
-    //        return BadRequest(message);
+        var _item = _mapper.Map<Document>(item);
+        var createdItem = _repository.TryCreate(_item, out message);
+        if (createdItem is null)
+            return BadRequest(message);
 
-    //    return Ok(_mapper.Map<EmployeeInfo>(null));
-    //}
+        return Ok(_mapper.Map<DocumentInfo>(_item));
+    }
 
-    //string Validation(UpdateDocumentTemplate item)
-    //{
-    //    if (string.IsNullOrEmpty(item.Name))
-    //        return "The name cannot be empty";
+    string Validation(UpdateDocument item)
+    {
+        if (string.IsNullOrEmpty(item.Sender))
+            return "The sender cannot be empty";
 
-    //    return string.Empty;
-    //}
+        return string.Empty;
+    }
 
-    //[HttpPut("Update")]
-    //public ActionResult<string> Put([FromQuery] Guid id, [FromBody] UpdateDocumentTemplate item)
-    //{
-    //    var message = Validation(item);
-    //    if (!string.IsNullOrEmpty(message))
-    //        return BadRequest(message);
+    [HttpPut("Update")]
+    public ActionResult<string> Put([FromQuery] Guid id, [FromBody] UpdateDocument item)
+    {
+        var message = Validation(item);
+        if (!string.IsNullOrEmpty(message))
+            return BadRequest(message);
 
-    //    var _item = _repository.GetById(id);
-    //    if (_item is null)
-    //        return NotFound();
+        var _item = _repository.GetById(id);
+        if (_item is null)
+            return NotFound();
 
-    //    _item.Name = item.Name;
-    //    _item.Description = item.Description;
-    //    var updated = _repository.TryUpdate(_item, out message);
-    //    if (!updated)
-    //        return BadRequest(message);
+        _item.Sender = item.Sender;
+        _item.PhoneNumber = item.PhoneNumber;
+        var updated = _repository.TryUpdate(_item, out message);
+        if (!updated)
+            return BadRequest(message);
 
-    //    return Ok("Successfully updated");
-    //}
+        return Ok("Successfully updated");
+    }
 
-    //[HttpPut("UploadTemplateFile")]
-    //public ActionResult<string> UpdateTemplate([FromQuery] Guid id, [FromForm(Name = "TemplateFile")] IFormFile templateFile)
-    //{
-    //    var _item = _repository.GetById(id);
-    //    if (_item is null)
-    //        return NotFound();
+    [HttpPut("UploadDocumentFile")]
+    public ActionResult<string> UpdateTemplate([FromQuery] Guid id, [FromForm(Name = "DocumentFile")] IFormFile documentFile)
+    {
+        var _item = _repository.GetById(id);
+        if (_item is null)
+            return NotFound();
 
-    //    // Check if the uploaded file is valid
-    //    if (templateFile == null || templateFile.Length == 0)
-    //        return BadRequest("No file uploaded.");
+        // Check if the uploaded file is valid
+        if (documentFile == null || documentFile.Length == 0)
+            return BadRequest("No file uploaded.");
 
-    //    // Validate file extension
-    //    var fileExtension = Path.GetExtension(templateFile.FileName);
-    //    if (fileExtension == null || !(fileExtension.Equals(".docx", StringComparison.OrdinalIgnoreCase) || fileExtension.Equals(".doc", StringComparison.OrdinalIgnoreCase)))
-    //    {
-    //        return BadRequest("Invalid file format. Only .docx files are allowed.");
-    //    }
+        // Validate file extension
+        var fileExtension = Path.GetExtension(documentFile.FileName);
+        if (fileExtension == null || !(fileExtension.Equals(".docx", StringComparison.OrdinalIgnoreCase) || fileExtension.Equals(".doc", StringComparison.OrdinalIgnoreCase)))
+        {
+            return BadRequest("Invalid file format. Only .docx files are allowed.");
+        }
 
-    //    // Validate MIME type (optional, but adds extra security)
-    //    if (!(templateFile.ContentType.Equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document", StringComparison.OrdinalIgnoreCase) || templateFile.ContentType.Equals("application/msword", StringComparison.OrdinalIgnoreCase)))
-    //    {
-    //        return BadRequest("Invalid file type. Only .docx files are allowed.");
-    //    }
+        // Validate MIME type (optional, but adds extra security)
+        if (!(documentFile.ContentType.Equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document", StringComparison.OrdinalIgnoreCase) || documentFile.ContentType.Equals("application/msword", StringComparison.OrdinalIgnoreCase)))
+        {
+            return BadRequest("Invalid file type. Only .docx files are allowed.");
+        }
 
-    //    // Ensure the Files directory exists
-    //    var filesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-    //    if (!Directory.Exists(filesDirectory))
-    //    {
-    //        Directory.CreateDirectory(filesDirectory);
-    //    }
+        // Ensure the Files directory exists
+        var filesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+        if (!Directory.Exists(filesDirectory))
+        {
+            Directory.CreateDirectory(filesDirectory);
+        }
 
-    //    // Generate a unique file name
-    //    var fileName = $"{Guid.NewGuid()}.docx";
-    //    var filePath = Path.Combine(filesDirectory, fileName);
+        // Generate a unique file name
+        var fileName = $"{Guid.NewGuid()}.docx";
+        var filePath = Path.Combine(filesDirectory, fileName);
 
-    //    // Save the file
-    //    using (var stream = new FileStream(filePath, FileMode.Create))
-    //    {
-    //        templateFile.CopyTo(stream);
-    //    }
+        // Save the file
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            documentFile.CopyTo(stream);
+        }
 
-    //    var oldFile = _item.FileName;
-    //    // Update the item with the new file name
-    //    _item.FileName = fileName;
-    //    var updated = _repository.TryUpdate(_item, out string message);
-    //    if (!updated)
-    //        return BadRequest(message);
+        var oldFile = _item.FileName;
+        // Update the item with the new file name
+        _item.FileName = fileName;
+        var updated = _repository.TryUpdate(_item, out string message);
+        if (!updated)
+            return BadRequest(message);
 
-    //    if (!string.IsNullOrEmpty(oldFile))
-    //    {
-    //        var oldFilePath = Path.Combine(filesDirectory, oldFile);
-    //        if (System.IO.File.Exists(oldFilePath))
-    //        {
-    //            try
-    //            {
-    //                System.IO.File.Delete(oldFilePath);
-    //            }
-    //            catch
-    //            {
-    //            }
-    //        }
-    //    }
+        if (!string.IsNullOrEmpty(oldFile))
+        {
+            var oldFilePath = Path.Combine(filesDirectory, oldFile);
+            if (System.IO.File.Exists(oldFilePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+                catch
+                { }
+            }
+        }
 
-    //    return Ok("Successfully updated");
-    //}
+        return Ok("Successfully updated");
+    }
 
     [HttpDelete("Delete")]
     public ActionResult<string> Delete([FromQuery] Guid id)

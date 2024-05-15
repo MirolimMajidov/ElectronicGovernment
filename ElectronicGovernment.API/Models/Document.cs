@@ -13,7 +13,9 @@ public class Document : BaseEntity
 
     public string Sender { get; set; }
 
-    public string SenderPhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
+
+    public string FileName { get; set; }
 
     [NotMapped]
     public List<string> Attachments { get; set; } = new List<string>();
@@ -32,7 +34,7 @@ public class Document : BaseEntity
         {
             Id = Id,
             Sender = Sender,
-            PhoneNumber = SenderPhoneNumber,
+            PhoneNumber = PhoneNumber,
             TemplateName = Template.Name,
             Status = Status,
             Process = "5/7",//TODO

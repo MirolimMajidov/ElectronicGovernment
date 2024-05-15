@@ -38,7 +38,7 @@ public class DocumentTemplateController : ControllerBase
     }
 
     [HttpGet("GetById")]
-    public ActionResult<EmployeeInfo> Get(Guid id)
+    public ActionResult<DocumentTemplateInfo> Get(Guid id)
     {
         var item = _repository.GetById(id);
         if (item is null)
@@ -48,7 +48,7 @@ public class DocumentTemplateController : ControllerBase
     }
 
     [HttpPost("Create")]
-    public ActionResult<EmployeeInfo> Post(CreateDocumentTemplate item)
+    public ActionResult<DocumentTemplateInfo> Post(CreateDocumentTemplate item)
     {
         var message = Validation(item);
         if (!string.IsNullOrEmpty(message))
@@ -59,7 +59,7 @@ public class DocumentTemplateController : ControllerBase
         if (createdItem is null)
             return BadRequest(message);
 
-        return Ok(_mapper.Map<EmployeeInfo>(null));
+        return Ok(_mapper.Map<DocumentTemplateInfo>(_item));
     }
 
     string Validation(UpdateDocumentTemplate item)

@@ -7,6 +7,7 @@ public class DocumentTemplate : BaseEntity
     public string FileName { get; set; }
 
     public Guid DepartmentId { get; set; }
+
     public Department Department { get; set; }
 
     public bool Status { get; set; } = false;
