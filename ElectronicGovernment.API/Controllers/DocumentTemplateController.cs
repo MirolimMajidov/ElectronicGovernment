@@ -9,7 +9,7 @@ namespace ElectronicGovernment.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(policy: "AdminOnly")]
+//[Authorize(policy: "AdminOnly")]
 public class DocumentTemplateController : ControllerBase
 {
     private readonly ILogger<DocumentTemplateController> _logger;
@@ -48,19 +48,13 @@ public class DocumentTemplateController : ControllerBase
     }
 
     [HttpPost("Create")]
-    public ActionResult<EmployeeInfo> Post([FromForm]IFormFile templateFile, [FromBody] CreateDocumentTemplate item)
+    public ActionResult<EmployeeInfo> Post(CreateDocumentTemplate item)
     {
         var message = Validation(item);
         if (!string.IsNullOrEmpty(message))
             return BadRequest(message);
 
-        if (templateFile is null)
-            return BadRequest("Template document must be added");
-
-        //TODO: Download file
-        var fileName = $"{Guid.NewGuid()}.docx";
         var _item = _mapper.Map<DocumentTemplate>(item);
-        _item.FileName = fileName;
         var createdItem = _repository.TryCreate(_item, out message);
         if (createdItem is null)
             return BadRequest(message);
@@ -96,19 +90,68 @@ public class DocumentTemplateController : ControllerBase
         return Ok("Successfully updated");
     }
 
-    [HttpPut("UpdateTemplate")]
-    public ActionResult<string> UpdateTemplate([FromQuery] Guid id, [FromForm] IFormFile templateFile)
+    [HttpPut("UploadTemplateFile")]
+    public ActionResult<string> UpdateTemplate([FromQuery] Guid id, [FromForm(Name = "TemplateFile")] IFormFile templateFile)
     {
         var _item = _repository.GetById(id);
         if (_item is null)
             return NotFound();
 
-        //TODO: Download file
+        // Check if the uploaded file is valid
+        if (templateFile == null || templateFile.Length == 0)
+            return BadRequest("No file uploaded.");
+
+        // Validate file extension
+        var fileExtension = Path.GetExtension(templateFile.FileName);
+        if (fileExtension == null || !(fileExtension.Equals(".docx", StringComparison.OrdinalIgnoreCase) || fileExtension.Equals(".doc", StringComparison.OrdinalIgnoreCase)))
+        {
+            return BadRequest("Invalid file format. Only .docx files are allowed.");
+        }
+
+        // Validate MIME type (optional, but adds extra security)
+        if (!(templateFile.ContentType.Equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document", StringComparison.OrdinalIgnoreCase) || templateFile.ContentType.Equals("application/msword", StringComparison.OrdinalIgnoreCase)))
+        {
+            return BadRequest("Invalid file type. Only .docx files are allowed.");
+        }
+
+        // Ensure the Files directory exists
+        var filesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+        if (!Directory.Exists(filesDirectory))
+        {
+            Directory.CreateDirectory(filesDirectory);
+        }
+
+        // Generate a unique file name
         var fileName = $"{Guid.NewGuid()}.docx";
+        var filePath = Path.Combine(filesDirectory, fileName);
+
+        // Save the file
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            templateFile.CopyTo(stream);
+        }
+
+        var oldFile = _item.FileName;
+        // Update the item with the new file name
         _item.FileName = fileName;
         var updated = _repository.TryUpdate(_item, out string message);
         if (!updated)
             return BadRequest(message);
+
+        if (!string.IsNullOrEmpty(oldFile))
+        {
+            var oldFilePath = Path.Combine(filesDirectory, oldFile);
+            if(System.IO.File.Exists(oldFilePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+                catch
+                {
+                }
+            }
+        }
 
         return Ok("Successfully updated");
     }
