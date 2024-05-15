@@ -3,14 +3,15 @@
 namespace ElectronicGovernment.DTO;
 
 /// <summary>
-/// This is for creating or updating Department
+/// This is for creating or updating Employee
 /// </summary>
-public class CommandDepartment
+public class CommandEmployee
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public string FirstName { get; set; }
 
-    public Guid? LeaderId { get; set; }
+    public string LastName { get; set; }
 
-    public Guid? OperatorId { get; set; }
+    public string Username { get; set; }
+
+    public string Password { get; set; }
 }
