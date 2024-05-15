@@ -33,7 +33,7 @@ public class DepartmentController : ControllerBase
     }
 
     [HttpGet("GetById")]
-    public ActionResult<DepartmentInfo> Get(Guid id)
+    public ActionResult<DepartmentFullInfo> Get(Guid id)
     {
         var item = _repository.GetById(id);
         if (item is null)

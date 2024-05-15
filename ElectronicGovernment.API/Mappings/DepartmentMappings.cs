@@ -9,6 +9,7 @@ public class DepartmentMappings : Profile
     public DepartmentMappings()
     {
         CreateMap<Department, DepartmentInfo>();
+        CreateMap<Department, DepartmentFullInfo>();
         CreateMap<CommandDepartment, Department>();
     }
 }
