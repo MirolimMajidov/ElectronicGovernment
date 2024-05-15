@@ -60,19 +60,19 @@ namespace ElectronicGovernment.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("db5e6b8e-f1f5-4a4a-9f15-61e98f7b38e8"),
-                            LeaderId = new Guid("73270360-ffaa-4506-a232-b995a03a5e0c"),
+                            Id = new Guid("17c8b94d-c6f4-4181-a78d-35e117a991f2"),
+                            LeaderId = new Guid("99fec809-ff99-4a9d-a8dc-25d9d2816686"),
                             Name = "Department 1",
-                            OperatorId = new Guid("d7f2c471-f05e-4c86-a5d3-d3d5a7194424"),
-                            OrganizationId = new Guid("7a7b234e-0d6f-4974-ba2a-90b0422a9f46")
+                            OperatorId = new Guid("30943e5d-1f9a-47dc-aa7f-a279847d5fde"),
+                            OrganizationId = new Guid("2a720891-3e68-4538-bf8f-51b6b5c2067c")
                         },
                         new
                         {
-                            Id = new Guid("4462ba3e-a60a-4fa6-ab08-46eafe00d278"),
-                            LeaderId = new Guid("a75da4ab-b7ca-4fba-b2e2-7d3f82419340"),
+                            Id = new Guid("74d6fd9c-c498-4f2e-86c8-2413f0789327"),
+                            LeaderId = new Guid("af54e8dc-850a-448f-9755-730329bd9655"),
                             Name = "Department 2",
-                            OperatorId = new Guid("5b9e0b4f-1d7f-47db-a449-73f258eb148a"),
-                            OrganizationId = new Guid("7a7b234e-0d6f-4974-ba2a-90b0422a9f46")
+                            OperatorId = new Guid("1fe1a7c6-57af-40e5-8cdb-77f40b0a02ec"),
+                            OrganizationId = new Guid("2a720891-3e68-4538-bf8f-51b6b5c2067c")
                         });
                 });
 
@@ -140,7 +140,7 @@ namespace ElectronicGovernment.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7a7b234e-0d6f-4974-ba2a-90b0422a9f46"),
+                            Id = new Guid("2a720891-3e68-4538-bf8f-51b6b5c2067c"),
                             Description = "To automate all departments of the Government",
                             Name = "Electronic Government"
                         });
@@ -207,45 +207,45 @@ namespace ElectronicGovernment.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2d7cb3d4-5ad6-45b0-bcb5-62ca4db3b8b5"),
+                            Id = new Guid("25968679-23a9-402a-ab2f-bd9c0bfbb98f"),
                             RoleType = 1,
-                            UserId = new Guid("49517a80-cf04-483d-98b3-8bc0968aa13d")
+                            UserId = new Guid("e72ee12d-c187-42e8-867c-f6fa93d20dfa")
                         },
                         new
                         {
-                            Id = new Guid("6295d455-be24-451a-9ec9-80f2c5dea4d7"),
+                            Id = new Guid("4c25711b-a067-4110-91df-f1ec027f7fdb"),
                             RoleType = 2,
-                            UserId = new Guid("1d450a24-6fa8-4410-bd52-81dc6bcd4165")
+                            UserId = new Guid("80638a8a-6dab-480f-b062-bc3fefa56116")
                         },
                         new
                         {
-                            Id = new Guid("6a033322-cde4-4a96-b345-7efdb1c9c14f"),
+                            Id = new Guid("899429e2-31a7-440f-97e0-4df180740253"),
                             RoleType = 4,
-                            UserId = new Guid("d87cf56e-8714-4136-8048-988fd24b75ea")
+                            UserId = new Guid("25252f57-6208-410b-9709-e3f467bf4de7")
                         },
                         new
                         {
-                            Id = new Guid("df4533fd-2f42-4e20-a82a-26c0597ed120"),
+                            Id = new Guid("ab4c7999-aa2e-4233-80e8-9f287484973c"),
                             RoleType = 3,
-                            UserId = new Guid("73270360-ffaa-4506-a232-b995a03a5e0c")
+                            UserId = new Guid("99fec809-ff99-4a9d-a8dc-25d9d2816686")
                         },
                         new
                         {
-                            Id = new Guid("b58e9213-a906-460a-89d3-4785af4bd64f"),
+                            Id = new Guid("5a84228f-567b-4d58-8dd8-5e184b63483e"),
                             RoleType = 3,
-                            UserId = new Guid("a75da4ab-b7ca-4fba-b2e2-7d3f82419340")
+                            UserId = new Guid("af54e8dc-850a-448f-9755-730329bd9655")
                         },
                         new
                         {
-                            Id = new Guid("6de80a6f-0cc9-451b-a573-98cdbfb4542a"),
+                            Id = new Guid("8e7508c5-65f2-459a-bee2-ba11727e8ca1"),
                             RoleType = 5,
-                            UserId = new Guid("d7f2c471-f05e-4c86-a5d3-d3d5a7194424")
+                            UserId = new Guid("30943e5d-1f9a-47dc-aa7f-a279847d5fde")
                         },
                         new
                         {
-                            Id = new Guid("ce02fd05-9e31-4979-824c-5358893eb887"),
+                            Id = new Guid("e2209066-ab56-4338-af7f-d1bc4cb2d690"),
                             RoleType = 5,
-                            UserId = new Guid("5b9e0b4f-1d7f-47db-a449-73f258eb148a")
+                            UserId = new Guid("1fe1a7c6-57af-40e5-8cdb-77f40b0a02ec")
                         });
                 });
 
@@ -265,14 +265,14 @@ namespace ElectronicGovernment.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("49517a80-cf04-483d-98b3-8bc0968aa13d"),
+                            Id = new Guid("e72ee12d-c187-42e8-867c-f6fa93d20dfa"),
                             FirstName = "Admin",
                             Password = "Admin",
                             Username = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("1d450a24-6fa8-4410-bd52-81dc6bcd4165"),
+                            Id = new Guid("80638a8a-6dab-480f-b062-bc3fefa56116"),
                             FirstName = "CEO",
                             LastName = "Organization",
                             Password = "Organization",
@@ -280,7 +280,7 @@ namespace ElectronicGovernment.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d87cf56e-8714-4136-8048-988fd24b75ea"),
+                            Id = new Guid("25252f57-6208-410b-9709-e3f467bf4de7"),
                             FirstName = "Global",
                             LastName = "Operator",
                             Password = "Operator",
@@ -288,7 +288,7 @@ namespace ElectronicGovernment.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("73270360-ffaa-4506-a232-b995a03a5e0c"),
+                            Id = new Guid("99fec809-ff99-4a9d-a8dc-25d9d2816686"),
                             FirstName = "Leader",
                             LastName = "Department1",
                             Password = "Dep1",
@@ -296,7 +296,7 @@ namespace ElectronicGovernment.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a75da4ab-b7ca-4fba-b2e2-7d3f82419340"),
+                            Id = new Guid("af54e8dc-850a-448f-9755-730329bd9655"),
                             FirstName = "Leader",
                             LastName = "Department2",
                             Password = "Dep2",
@@ -304,7 +304,7 @@ namespace ElectronicGovernment.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d7f2c471-f05e-4c86-a5d3-d3d5a7194424"),
+                            Id = new Guid("30943e5d-1f9a-47dc-aa7f-a279847d5fde"),
                             FirstName = "Operator",
                             LastName = "Department1",
                             Password = "Dep1",
@@ -312,7 +312,7 @@ namespace ElectronicGovernment.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5b9e0b4f-1d7f-47db-a449-73f258eb148a"),
+                            Id = new Guid("1fe1a7c6-57af-40e5-8cdb-77f40b0a02ec"),
                             FirstName = "Leader",
                             LastName = "Department2",
                             Password = "Dep2",
