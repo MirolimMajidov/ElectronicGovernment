@@ -1,6 +1,6 @@
 ﻿namespace ElectronicGovernment.DTO;
 
-public class EmployeeInfo
+public record EmployeeInfo
 {
     public Guid Id { get; set; }
 
@@ -8,5 +8,5 @@ public class EmployeeInfo
 
     public string LastName { get; set; }
 
-    public string FullName => $"{FirstName} {LastName}";
+    public string FullName { get; set; }
 }

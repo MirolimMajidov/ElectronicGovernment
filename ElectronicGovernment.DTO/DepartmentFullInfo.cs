@@ -1,6 +1,6 @@
 ﻿namespace ElectronicGovernment.DTO;
 
-public class DepartmentFullInfo
+public record DepartmentFullInfo
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

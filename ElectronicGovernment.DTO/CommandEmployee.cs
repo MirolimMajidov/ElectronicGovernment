@@ -5,7 +5,7 @@ namespace ElectronicGovernment.DTO;
 /// <summary>
 /// This is for creating or updating Department
 /// </summary>
-public class CommandDepartment
+public record CommandDepartment
 {
     public string Name { get; set; }
     public string Description { get; set; }

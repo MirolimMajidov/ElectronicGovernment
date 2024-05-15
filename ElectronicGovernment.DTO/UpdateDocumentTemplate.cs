@@ -1,8 +1,11 @@
 ﻿namespace ElectronicGovernment.DTO;
 
-public record DepartmentInfo
+/// <summary>
+/// This is for updating DocumentTemplate
+/// </summary>
+public record UpdateDocumentTemplate
 {
-    public Guid Id { get; set; }
     public string Name { get; set; }
+
     public string Description { get; set; }
 }

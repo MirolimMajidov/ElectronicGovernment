@@ -1,6 +1,6 @@
 ﻿namespace ElectronicGovernment.DTO;
 
-public class OrganizationInfo
+public record OrganizationInfo
 {
     public string Name { get; set; }
     public string Description { get; set; }

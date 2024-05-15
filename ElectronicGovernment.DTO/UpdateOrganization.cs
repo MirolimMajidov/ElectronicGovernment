@@ -5,7 +5,7 @@ namespace ElectronicGovernment.DTO;
 /// <summary>
 /// This is for updating Organization info
 /// </summary>
-public class UpdateOrganization
+public record UpdateOrganization
 {
     public string Name { get; set; }
     public string Description { get; set; }

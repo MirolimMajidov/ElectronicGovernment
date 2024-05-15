@@ -24,7 +24,7 @@ public class DepartmentController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet(Name = "All")]
+    [HttpGet("All")]
     public ActionResult<IEnumerable<DepartmentInfo>> GetAll()
     {
         var departments = _repository.GetAll().Where(r => r.IsOnlyForWorkFlow == false);
@@ -32,7 +32,7 @@ public class DepartmentController : ControllerBase
         return Ok(_mapper.Map<List<DepartmentInfo>>(departments));
     }
 
-    [HttpGet(Name = "WorkFlowDepartments")]
+    [HttpGet("WorkFlowDepartments")]
     public ActionResult<IEnumerable<DepartmentInfo>> WorkFlowDepartments()
     {
         var departments = _repository.GetAll();
