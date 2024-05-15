@@ -169,6 +169,7 @@ namespace BankManagementSystem.Infrastructure
             modelBuilder.Entity<Document>(entity =>
             {
                 entity.HasKey(p => p.Id);
+                entity.Property(e => e.Attachments).HasColumnName("Attachments").IsUnicode(false);
             });
         }
     }

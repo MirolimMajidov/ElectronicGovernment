@@ -9,6 +9,6 @@ public class DocumentTemplateMappings : Profile
     public DocumentTemplateMappings()
     {
         CreateMap<DocumentTemplate, DocumentTemplateInfo>();
-        CreateMap<UpdateOrganization, Organization>();
+        CreateMap<CreateDocumentTemplate, DocumentTemplate>();
     }
 }

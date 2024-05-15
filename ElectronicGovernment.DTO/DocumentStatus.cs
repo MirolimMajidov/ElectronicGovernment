@@ -1,8 +1,8 @@
-﻿namespace ElectronicGovernment.API.Models
+﻿namespace ElectronicGovernment.DTO
 {
     public enum DocumentStatus
     {
-        None,
+        NotStarted,
         InProgress,
         ReApplied,
         Accepted,
