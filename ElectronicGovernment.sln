@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicGovernment.DTO", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicGovernment.Web", "ElectronicGovernment.Web\ElectronicGovernment.Web.csproj", "{B8BDA696-8132-45AF-8485-E27093AD989D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicGovernment.Mobile", "ElectronicGovernment.Mobile\ElectronicGovernment.Mobile.csproj", "{3E7905F5-4336-4FFF-A025-B2D4D00725FE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{B8BDA696-8132-45AF-8485-E27093AD989D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8BDA696-8132-45AF-8485-E27093AD989D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8BDA696-8132-45AF-8485-E27093AD989D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E7905F5-4336-4FFF-A025-B2D4D00725FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E7905F5-4336-4FFF-A025-B2D4D00725FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E7905F5-4336-4FFF-A025-B2D4D00725FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E7905F5-4336-4FFF-A025-B2D4D00725FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
