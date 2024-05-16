@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<abstractions:BaseContentPage
+    x:DataType="viewModels:DocumentHistoryViewModel"
+    x:TypeArguments="viewModels:DocumentHistoryViewModel"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:ElectronicGovernment.Mobile.ViewModels"
+    xmlns:abstractions="clr-namespace:ElectronicGovernment.Mobile.Abstractions"
+    xmlns:models="clr-namespace:ElectronicGovernment.Mobile.Models"
+    xmlns:resources="clr-namespace:ElectronicGovernment.Mobile.Resources.Fonts"
+    xmlns:converters="clr-namespace:ElectronicGovernment.Mobile.Converters"
+    x:Name="This"
+    Title="Document History"
+    x:Class="ElectronicGovernment.Mobile.Views.DocumentHistoryPage">
+
+    <abstractions:BaseContentPage.Resources>
+        <converters:StringEmptyOrNullToBoolInvertConverter x:Key="StringEmptyOrNullToBoolInvertConverter" />
+        <converters:DocumentTypeToColorConverter x:Key="DocumentTypeToColorConverter" />
+        <converters:DocumentTypeToIconConverter x:Key="DocumentTypeToIconConverter" />
+    </abstractions:BaseContentPage.Resources>
+
+    <StackLayout
+        Margin="10">
+        <Label VerticalOptions="Center"
+               IsVisible="{Binding DisplayItems.Name,  
+                                                        Converter={StaticResource StringEmptyOrNullToBoolInvertConverter}}">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        Text="Document name: "
+                        Style="{StaticResource LabelStyle}" />
+                    <Span
+                        Text="{Binding DisplayItems.Name, StringFormat=' {0}'}"
+                        Style="{StaticResource ValueStyle}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <Label VerticalOptions="Center"
+               IsVisible="{Binding DisplayItems.CreatedDate,  
+                                                        Converter={StaticResource StringEmptyOrNullToBoolInvertConverter}}">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        Text="CreatedDate: "
+                        Style="{StaticResource LabelStyle}" />
+                    <Span
+                        Text="{Binding DisplayItems.CreatedDate, StringFormat=' {0}'}"
+                        Style="{StaticResource ValueStyle}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <ListView
+            RefreshCommand="{Binding RefreshCommand}"
+            RefreshAllowed="True"
+            IsRefreshing="{Binding IsRefresh}"
+            IsPullToRefreshEnabled="True"
+            HasUnevenRows="True"
+            ItemsSource="{Binding DisplayItems.Histories}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:DocumentHistory">
+                    <ViewCell>
+                        <ContentView>
+                            <Frame CornerRadius="10"
+                                   Margin="5"
+                                   HasShadow="True">
+                                <Grid ColumnDefinitions="*, auto">
+                                    <StackLayout Grid.Column="0">
+
+                                        <Label VerticalOptions="Center"
+                                               IsVisible="{Binding ActionBy,  
+                                                        Converter={StaticResource StringEmptyOrNullToBoolInvertConverter}}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        Text="ActionBy: "
+                                                        Style="{StaticResource LabelStyle}" />
+                                                    <Span
+                                                        Text="{Binding ActionBy, StringFormat=' {0}'}"
+                                                        Style="{StaticResource ValueStyle}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label VerticalOptions="Center"
+                                               IsVisible="{Binding Description,  
+                                                        Converter={StaticResource StringEmptyOrNullToBoolInvertConverter}}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        Text="Description: "
+                                                        Style="{StaticResource LabelStyle}" />
+                                                    <Span
+                                                        Text="{Binding Description, StringFormat=' {0}'}"
+                                                        Style="{StaticResource ValueStyle}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+
+                                    <ImageButton
+                                        Grid.Column="1"
+                                        VerticalOptions="Center">
+                                        <ImageButton.Source>
+                                            <FontImageSource
+                                                Color="{Binding Status, Converter={StaticResource DocumentTypeToColorConverter}}"
+                                                FontFamily="{StaticResource MaterialFontFamily}"
+                                                Glyph="{Binding Status, Converter={StaticResource DocumentTypeToIconConverter}}" />
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                </Grid>
+                            </Frame>
+                        </ContentView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Center"
+                           HeightRequest="30" />
+    </StackLayout>
+
+</abstractions:BaseContentPage>

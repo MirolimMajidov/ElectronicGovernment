@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<abstractions:BaseContentPage
+    x:TypeArguments="viewModels:HomeViewModel"
+    x:DataType="viewModels:HomeViewModel"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:ElectronicGovernment.Mobile.Abstractions"
+    xmlns:viewModels="clr-namespace:ElectronicGovernment.Mobile.ViewModels"
+    BindingContext="{Binding HomeViewModel, Source={StaticResource ViewModelLocator}}"
+    x:Class="ElectronicGovernment.Mobile.Views.HomePage">
+    <ContentPage.Content>
+
+        <StackLayout
+            Margin="10">
+            <Entry
+                Placeholder="Documennt id" />
+
+            <Button
+                Text="History"
+                HorizontalOptions="Fill"
+                VerticalOptions="Start"
+                Command="{Binding NavigateDocumentHistoryCommand}" />
+        </StackLayout>
+
+    </ContentPage.Content>
+</abstractions:BaseContentPage>
